@@ -2,6 +2,10 @@
 
 A Docker container for the use of Crestron RoomView. This program is remotely controlled with Firefox 52 and Flash Player 32 in a virtual display by a Python script.
 
+Crestron RoomView is an application for controlling projectors.
+
+![Crestron RoomView](https://raw.githubusercontent.com/Michdo93/openHAB-Crestron-Room-View-Control/main/crestron_room_view.JPG)
+
 ## 📦 Docker Image
 
 The image is available on Docker Hub:
@@ -104,6 +108,47 @@ docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py tog
 ```
 
 > Make sure the `DISPLAY` environment inside the container is correctly set to match what's in `display.txt` (typically `:99`).
+
+## 🧠 Available Commands
+
+You can control the projector or display device by executing one of the following Python functions inside the container:
+
+```bash
+docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py <command>
+```
+
+| Command                   | Description                                                            |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `togglePower`             | Toggles the projector power ON or OFF, depending on the current state. |
+| `powerOn`                 | Turns the projector ON.                                                |
+| `powerOff`                | Turns the projector OFF.                                               |
+| `reduceVolume`            | Decreases the audio volume.                                            |
+| `increaseVolume`          | Increases the audio volume.                                            |
+| `muteVolume`              | Toggles mute ON or OFF.                                                |
+| `changeSourceToComputer1` | Switches the input source to "Computer 1".                             |
+| `changeSourceToComputer2` | Switches the input source to "Computer 2".                             |
+| `changeSourceToHDMI1`     | Switches the input source to "HDMI 1".                                 |
+| `changeSourceToHDMI2`     | Switches the input source to "HDMI 2".                                 |
+| `changeSourceToVideo`     | Switches the input source to "Video".                                  |
+| `changeSourceToSVideo`    | Switches the input source to "S-Video".                                |
+| `source`                  | Opens the source selection menu.                                       |
+| `auto`                    | Triggers automatic image adjustment.                                   |
+| `blank`                   | Blanks (hides) the current display output.                             |
+| `enter`                   | Sends an Enter key action (usually for menu confirmation).             |
+| `freeze`                  | Freezes the current screen image.                                      |
+| `openMenu`                | Opens the projector menu.                                              |
+| `menuLeft`                | Navigates the menu to the left.                                        |
+| `menuRight`               | Navigates the menu to the right.                                       |
+| `menuUp`                  | Navigates the menu upwards.                                            |
+| `menuDown`                | Navigates the menu downwards.                                          |
+| `increaseBrightness`      | Increases the screen brightness.                                       |
+| `decreaseBrightness`      | Decreases the screen brightness.                                       |
+| `increaseContrast`        | Increases the contrast of the display.                                 |
+| `decreaseContrast`        | Decreases the contrast of the display.                                 |
+| `increaseSharpness`       | Increases the image sharpness.                                         |
+| `decreaseSharpness`       | Decreases the image sharpness.                                         |
+
+> 💡 All functions simulate button interactions via image recognition and browser control.
 
 ## 🛠️ Optional: Manual Build
 
