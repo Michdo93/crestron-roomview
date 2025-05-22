@@ -1,0 +1,19 @@
+version: '3.8'
+
+volumes:
+  x11socket:
+
+services:
+  crestron-roomview:
+    build: ./crestron-roomview
+    container_name: crestron-roomview
+    volumes:
+      - x11socket:/tmp/.X11-unix
+      - /opt/docker/containers/crestron-roomview/config/url.txt:/config/url.txt:ro
+      - /opt/docker/containers/crestron-roomview/config/resolution.txt:/config/resolution.txt:ro
+      - /opt/docker/containers/crestron-roomview/config/display.txt:/config/display.txt:ro
+      - /opt/docker/containers/crestron-roomview/app:/app
+    environment:
+      DISPLAY: ':0'
+    restart: unless-stopped
+    network_mode: "host"

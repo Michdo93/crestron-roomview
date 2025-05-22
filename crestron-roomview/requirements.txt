@@ -1,0 +1,11 @@
+python-xlib==0.33
+requests==2.31.0
+opencv-python==4.9.0.80
+PyVirtualDisplay==3.0
+pyscreenshot==3.1
+pillow==10.2.0
+selenium==4.20.0
+pyautogui==0.9.54
+pyscreeze==0.1.30
+keyboard==0.13.5
+numpy<2
