@@ -160,6 +160,118 @@ docker compose build --no-cache
 
 ---
 
+## Example usage: openHAB integration
+
+Of course, you can now also integrate the beamer/projector into your smart home system. I will now explain this using the example of openHAB.
+
+### exec.whitelist
+
+In the `exec.whitelist` file, you enter commands that may be executed from your system by the `Exec Binding` or by `Exec Actions` in Rules. A special permission means a whitelist procedure. Hence the name of the file. It is usually located under `/etc/openhab/misc/exec.whitelist`.
+
+If the Docker container is running on the same system, you can enter the following command, for example:
+
+```
+/usr/bin/docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s
+```
+
+If the Docker container is running on a different system, you can enter the following command, for example:
+
+```
+/usr/bin/sshpass -p <password> /usr/bin/ssh -t -o StrictHostKeyChecking=no <username>@<ip> '/usr/bin/docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s'
+```
+
+Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running). Für SSH empfehle ich auch `sshpass` zu installieren und zu verwenden. Stelle allerdings vorher sicher, dass der openHAB-User einen `Fingerprint` für SSH besitzt (`ssh -u openhab sshpass -p <password> <username>@<ip>`).
+
+The parameter `%2$s` means that any parameter can be inserted at this point. This is very practical because we control the program remotely via various parameters in the command line, e.g. `togglePower`, `powerOn`, `powerOff`
+
+### Items
+
+We use a separate `switch` item for each command to be controlled at the end. Items are usually stored and created in `/etc/openhab/items`. You can create this items as example with `sudo nano /etc/openhab/items/crestron.items`:
+
+```
+Group Crestron_RoomView_Control "Crestron RoomView Control" <screen>
+
+Switch Crestron_RoomView_Control_TogglePower "On/off projector" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_VolumeDown "Decrease volume" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_VolumeUp "Increase volume" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_Mute_Volume "Mute volume" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_SrcToComputer1 "Computer1/YPbPr1" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_SrcToComputer2 "Computer2/YPbPr2" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_SrcToHDMI1 "HDMI1" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_SrcToHDMI2 "HDMI2" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_SrcToVideo "Video" (Crestron_RoomView_Control)
+// The following functions may work, but it will be more difficult to operate them correctly.
+Switch Crestron_RoomView_Control_Source "Source" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_Auto "Auto adjust" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_Blank "Blank screen" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_Enter "Enter" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_Freeze "Freeze image" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_OpenMenu "Open menu" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_MenuLeft "Menu left" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_MenuRight "Menu right" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_MenuUp "Menu up" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_MenuDown "Menu down" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_IncreaseBrightness "Increase brightness" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_DecreaseBrightness "Decrease brightness" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_IncreaseContrast "Increase contrast" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_DecreaseContrast "Decrease contrast" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_IncreaseSharpness "Increase sharpness" (Crestron_RoomView_Control)
+Switch Crestron_RoomView_Control_DecreaseSharpness "Decrease sharpness" (Crestron_RoomView_Control)
+```
+
+### Sitemaps
+
+A sitemap can be created so that items can also be operated. A sitemap is usually located in `/etc/openhab/sitemaps`. A `sitemap` could look like this (e.g. `sudo nano /etc/openhab/sitemaps/crestro.sitemaps`):
+
+```
+sitemap crestron label="Crestron RoomView"
+{
+    Text label="Crestron RoomView Control" icon="screen" {
+        
+        // Power & Audio
+        Switch item=Crestron_RoomView_Control_TogglePower label="On/off projector" mappings=[ON="Power"]
+        Switch item=Crestron_RoomView_Control_VolumeDown label="Decrease volume" mappings=[ON="Vol -"]
+        Switch item=Crestron_RoomView_Control_VolumeUp label="Increase volume" mappings=[ON="Vol +"]
+        Switch item=Crestron_RoomView_Control_Mute_Volume label="Mute volume" mappings=[ON="Mute"]
+
+        // Source Selection
+        Switch item=Crestron_RoomView_Control_SrcToComputer1 label="Computer1/YPbPr1" mappings=[ON="Computer1"]
+        Switch item=Crestron_RoomView_Control_SrcToComputer2 label="Computer2/YPbPr2" mappings=[ON="Computer2"]
+        Switch item=Crestron_RoomView_Control_SrcToHDMI1 label="HDMI1" mappings=[ON="HDMI1"]
+        Switch item=Crestron_RoomView_Control_SrcToHDMI2 label="HDMI2" mappings=[ON="HDMI2"]
+        Switch item=Crestron_RoomView_Control_SrcToVideo label="Video" mappings=[ON="Video"]
+        Switch item=Crestron_RoomView_Control_Source label="Source" mappings=[ON="Source"]
+
+        // Basic Controls
+        Switch item=Crestron_RoomView_Control_Auto label="Auto Adjust" mappings=[ON="Auto"]
+        Switch item=Crestron_RoomView_Control_Blank label="Blank Screen" mappings=[ON="Blank"]
+        Switch item=Crestron_RoomView_Control_Freeze label="Freeze Image" mappings=[ON="Freeze"]
+        Switch item=Crestron_RoomView_Control_Enter label="Enter" mappings=[ON="Enter"]
+        Switch item=Crestron_RoomView_Control_OpenMenu label="Open Menu" mappings=[ON="Menu"]
+
+        // Menu Navigation
+        Switch item=Crestron_RoomView_Control_MenuUp label="Menu Up" mappings=[ON="↑"]
+        Switch item=Crestron_RoomView_Control_MenuDown label="Menu Down" mappings=[ON="↓"]
+        Switch item=Crestron_RoomView_Control_MenuLeft label="Menu Left" mappings=[ON="←"]
+        Switch item=Crestron_RoomView_Control_MenuRight label="Menu Right" mappings=[ON="→"]
+
+        // Image Settings
+        Switch item=Crestron_RoomView_Control_IncreaseBrightness label="Brightness +" mappings=[ON="+"]
+        Switch item=Crestron_RoomView_Control_DecreaseBrightness label="Brightness -" mappings=[ON="-"]
+        Switch item=Crestron_RoomView_Control_IncreaseContrast label="Contrast +" mappings=[ON="+"]
+        Switch item=Crestron_RoomView_Control_DecreaseContrast label="Contrast -" mappings=[ON="-"]
+        Switch item=Crestron_RoomView_Control_IncreaseSharpness label="Sharpness +" mappings=[ON="+"]
+        Switch item=Crestron_RoomView_Control_DecreaseSharpness label="Sharpness -" mappings=[ON="-"]
+    }
+}
+```
+
+### Rules
+
+We then use rules to access our program in the Docker container to remotely control the beamer/projector. Depending on where Docker is running, this can be done with or without SSH. Rules are usually stored in `/etc/openhab/rules`. However, if you use `Scripted Automation`, e.g. when using Jython rules, then there are other paths. In the following I will give both `DSL Rules` and `Jython Rules` as an example both with SSH and without.
+
+---
+
 ## 📝 License
 
 MIT License – see [LICENSE](LICENSE).
