@@ -180,7 +180,7 @@ If the Docker container is running on a different system, you can enter the foll
 /usr/bin/sshpass -p <password> /usr/bin/ssh -t -o StrictHostKeyChecking=no <username>@<ip> '/usr/bin/docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s'
 ```
 
-Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running). Für SSH empfehle ich auch `sshpass` zu installieren und zu verwenden. Stelle allerdings vorher sicher, dass der openHAB-User einen `Fingerprint` für SSH besitzt (`ssh -u openhab sshpass -p <password> <username>@<ip>`).
+Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running). For SSH, I also recommend installing and using `sshpass`. However, first make sure that the openHAB user has a 'fingerprint' for SSH (`ssh -u openhab sshpass -p <password> <username>@<ip>`).
 
 The parameter `%2$s` means that any parameter can be inserted at this point. This is very practical because we control the program remotely via various parameters in the command line, e.g. `togglePower`, `powerOn`, `powerOff`
 
@@ -271,6 +271,8 @@ sitemap crestron label="Crestron RoomView"
 We then use rules to access our program in the Docker container to remotely control the beamer/projector. Depending on where Docker is running, this can be done with or without SSH. Rules are usually stored in `/etc/openhab/rules`. However, if you use `Scripted Automation`, e.g. when using Jython rules, then there are other paths. In the following I will give both `DSL Rules` and `Jython Rules` as an example both with SSH and without.
 
 #### DSL Rules without SSH
+
+As example you could edit `sudo nano /etc/openhab/rules/crestron.rules`:
 
 ```
 rule "Crestron_RoomView_Control_TogglePower received command ON"
@@ -428,6 +430,8 @@ end
 
 #### DSL Rules with SSH
 
+As example you could edit `sudo nano /etc/openhab/rules/crestron.rules`:
+
 ```
 rule "Crestron_RoomView_Control_TogglePower received command ON"
 when
@@ -582,17 +586,163 @@ then
 end
 ```
 
+Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running).
+
 #### Jython Rules without SSH
 
-```
+As example you could edit `sudo nano /etc/openhab/automation/jsr223/python/personal/crestron.py`:
 
+```
+from core.rules import rule
+from core.triggers import when
+from core.actions import Exec
+from core.actions import LogAction
+from java.time import Duration
+
+def execute_and_reset(item_name, command):
+    result = Exec.executeCommandLine(
+        "/usr/bin/docker", "exec", "-it", "crestron-roomview",
+        "/usr/bin/python3", "/app/crestron_roomview.py", command,
+        Duration.ofSeconds(60)
+    )
+    LogAction.logInfo("CrestronExec", "Command result: {}".format(result))
+    events.postUpdate(item_name, "OFF")
+
+@rule("Toggle Power")
+@when("Item Crestron_RoomView_Control_TogglePower received command ON")
+def toggle_power(event):
+    execute_and_reset(event.itemName, "togglePower")
+
+@rule("Volume Down")
+@when("Item Crestron_RoomView_Control_VolumeDown received command ON")
+def volume_down(event):
+    execute_and_reset(event.itemName, "reduceVolume")
+
+@rule("Volume Up")
+@when("Item Crestron_RoomView_Control_VolumeUp received command ON")
+def volume_up(event):
+    execute_and_reset(event.itemName, "increaseVolume")
+
+@rule("Mute Volume")
+@when("Item Crestron_RoomView_Control_Mute_Volume received command ON")
+def mute_volume(event):
+    execute_and_reset(event.itemName, "muteVolume")
+
+@rule("Source to Computer 1")
+@when("Item Crestron_RoomView_Control_SrcToComputer1 received command ON")
+def src_to_computer1(event):
+    execute_and_reset(event.itemName, "changeSourceToComputer1")
+
+@rule("Source to Computer 2")
+@when("Item Crestron_RoomView_Control_SrcToComputer2 received command ON")
+def src_to_computer2(event):
+    execute_and_reset(event.itemName, "changeSourceToComputer2")
+
+@rule("Source to HDMI1")
+@when("Item Crestron_RoomView_Control_SrcToHDMI1 received command ON")
+def src_to_hdmi1(event):
+    execute_and_reset(event.itemName, "changeSourceToHDMI1")
+
+@rule("Source to HDMI2")
+@when("Item Crestron_RoomView_Control_SrcToHDMI2 received command ON")
+def src_to_hdmi2(event):
+    execute_and_reset(event.itemName, "changeSourceToHDMI2")
+
+@rule("Source to Video")
+@when("Item Crestron_RoomView_Control_SrcToVideo received command ON")
+def src_to_video(event):
+    execute_and_reset(event.itemName, "changeSourceToVideo")
+
+@rule("Source Info")
+@when("Item Crestron_RoomView_Control_source received command ON")
+def src_info(event):
+    execute_and_reset(event.itemName, "source")
+
+@rule("Auto")
+@when("Item Crestron_RoomView_Control_auto received command ON")
+def auto_command(event):
+    execute_and_reset(event.itemName, "auto")
 ```
 
 #### Jython Rules with SSH
 
-```
+As example you could edit `sudo nano /etc/openhab/automation/jsr223/python/personal/crestron.py`:
 
 ```
+from core.rules import rule
+from core.triggers import when
+from core.actions import Exec
+from core.actions import LogAction
+from java.time import Duration
+
+def execute_and_reset(item_name, command):
+    result = Exec.executeCommandLine(
+        "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh",
+        "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>",
+        "/usr/bin/docker", "exec", "-it", "crestron-roomview",
+        "/usr/bin/python3", "/app/crestron_roomview.py", command,
+        Duration.ofSeconds(60)
+    )
+    LogAction.logInfo("CrestronExec", "Command result: {}".format(result))
+    events.postUpdate(item_name, "OFF")
+
+@rule("Toggle Power")
+@when("Item Crestron_RoomView_Control_TogglePower received command ON")
+def toggle_power(event):
+    execute_and_reset(event.itemName, "togglePower")
+
+@rule("Volume Down")
+@when("Item Crestron_RoomView_Control_VolumeDown received command ON")
+def volume_down(event):
+    execute_and_reset(event.itemName, "reduceVolume")
+
+@rule("Volume Up")
+@when("Item Crestron_RoomView_Control_VolumeUp received command ON")
+def volume_up(event):
+    execute_and_reset(event.itemName, "increaseVolume")
+
+@rule("Mute Volume")
+@when("Item Crestron_RoomView_Control_Mute_Volume received command ON")
+def mute_volume(event):
+    execute_and_reset(event.itemName, "muteVolume")
+
+@rule("Source to Computer 1")
+@when("Item Crestron_RoomView_Control_SrcToComputer1 received command ON")
+def src_to_computer1(event):
+    execute_and_reset(event.itemName, "changeSourceToComputer1")
+
+@rule("Source to Computer 2")
+@when("Item Crestron_RoomView_Control_SrcToComputer2 received command ON")
+def src_to_computer2(event):
+    execute_and_reset(event.itemName, "changeSourceToComputer2")
+
+@rule("Source to HDMI1")
+@when("Item Crestron_RoomView_Control_SrcToHDMI1 received command ON")
+def src_to_hdmi1(event):
+    execute_and_reset(event.itemName, "changeSourceToHDMI1")
+
+@rule("Source to HDMI2")
+@when("Item Crestron_RoomView_Control_SrcToHDMI2 received command ON")
+def src_to_hdmi2(event):
+    execute_and_reset(event.itemName, "changeSourceToHDMI2")
+
+@rule("Source to Video")
+@when("Item Crestron_RoomView_Control_SrcToVideo received command ON")
+def src_to_video(event):
+    execute_and_reset(event.itemName, "changeSourceToVideo")
+
+@rule("Source Info")
+@when("Item Crestron_RoomView_Control_source received command ON")
+def src_info(event):
+    execute_and_reset(event.itemName, "source")
+
+@rule("Auto")
+@when("Item Crestron_RoomView_Control_auto received command ON")
+def auto_command(event):
+    execute_and_reset(event.itemName, "auto")
+```
+
+Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running).
 
 ---
 
