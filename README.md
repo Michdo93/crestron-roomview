@@ -160,7 +160,7 @@ docker compose build --no-cache
 
 ---
 
-## Example usage: openHAB integration
+## 🏠 Example usage: openHAB integration
 
 Of course, you can now also integrate the beamer/projector into your smart home system. I will now explain this using the example of openHAB.
 
