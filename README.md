@@ -270,6 +270,330 @@ sitemap crestron label="Crestron RoomView"
 
 We then use rules to access our program in the Docker container to remotely control the beamer/projector. Depending on where Docker is running, this can be done with or without SSH. Rules are usually stored in `/etc/openhab/rules`. However, if you use `Scripted Automation`, e.g. when using Jython rules, then there are other paths. In the following I will give both `DSL Rules` and `Jython Rules` as an example both with SSH and without.
 
+#### DSL Rules without SSH
+
+```
+rule "Crestron_RoomView_Control_TogglePower received command ON"
+when
+    Item Crestron_RoomView_Control_TogglePower received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
+    Crestron_RoomView_Control_TogglePower.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_VolumeDown received command ON"
+when
+    Item Crestron_RoomView_Control_VolumeDown received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
+    Crestron_RoomView_Control_VolumeDown.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_VolumeUp received command ON"
+when
+    Item Crestron_RoomView_Control_VolumeUp received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
+    Crestron_RoomView_Control_VolumeUp.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_Mute_Volume received command ON"
+when
+    Item Crestron_RoomView_Control_Mute_Volume received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
+    Crestron_RoomView_Control_Mute_Volume.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToComputer1 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToComputer1 received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
+    Crestron_RoomView_Control_SrcToComputer1.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToComputer2 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToComputer2 received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
+    Crestron_RoomView_Control_SrcToComputer2.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToHDMI1 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToHDMI1 received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
+    Crestron_RoomView_Control_SrcToHDMI1.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToHDMI2 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToHDMI2 received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
+    Crestron_RoomView_Control_SrcToHDMI2.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToVideo received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToVideo received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
+    Crestron_RoomView_Control_SrcToVideo.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_source received command ON"
+when
+    Item Crestron_RoomView_Control_source received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
+    Crestron_RoomView_Control_source.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_auto received command ON"
+when
+    Item Crestron_RoomView_Control_auto received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
+    Crestron_RoomView_Control_auto.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_blank received command ON"
+when
+    Item Crestron_RoomView_Control_blank received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
+    Crestron_RoomView_Control_blank.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_enter received command ON"
+when
+    Item Crestron_RoomView_Control_enter received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
+    Crestron_RoomView_Control_enter.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_freeze received command ON"
+when
+    Item Crestron_RoomView_Control_freeze received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
+    Crestron_RoomView_Control_freeze.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_openMenu received command ON"
+when
+    Item Crestron_RoomView_Control_openMenu received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
+    Crestron_RoomView_Control_openMenu.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuLeft received command ON"
+when
+    Item Crestron_RoomView_Control_menuLeft received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
+    Crestron_RoomView_Control_menuLeft.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuRight received command ON"
+when
+    Item Crestron_RoomView_Control_menuRight received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
+    Crestron_RoomView_Control_menuRight.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuUp received command ON"
+when
+    Item Crestron_RoomView_Control_menuUp received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
+    Crestron_RoomView_Control_menuUp.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuDown received command ON"
+when
+    Item Crestron_RoomView_Control_menuDown received command ON
+then
+    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
+    Crestron_RoomView_Control_menuDown.postUpdate(OFF)
+end
+```
+
+#### DSL Rules with SSH
+
+```
+rule "Crestron_RoomView_Control_TogglePower received command ON"
+when
+    Item Crestron_RoomView_Control_TogglePower received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
+    Crestron_RoomView_Control_TogglePower.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_VolumeDown received command ON"
+when
+    Item Crestron_RoomView_Control_VolumeDown received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
+    Crestron_RoomView_Control_VolumeDown.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_VolumeUp received command ON"
+when
+    Item Crestron_RoomView_Control_VolumeUp received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
+    Crestron_RoomView_Control_VolumeUp.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_Mute_Volume received command ON"
+when
+    Item Crestron_RoomView_Control_Mute_Volume received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
+    Crestron_RoomView_Control_Mute_Volume.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToComputer1 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToComputer1 received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
+    Crestron_RoomView_Control_SrcToComputer1.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToComputer2 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToComputer2 received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
+    Crestron_RoomView_Control_SrcToComputer2.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToHDMI1 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToHDMI1 received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
+    Crestron_RoomView_Control_SrcToHDMI1.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToHDMI2 received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToHDMI2 received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
+    Crestron_RoomView_Control_SrcToHDMI2.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_SrcToVideo received command ON"
+when
+    Item Crestron_RoomView_Control_SrcToVideo received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
+    Crestron_RoomView_Control_SrcToVideo.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_source received command ON"
+when
+    Item Crestron_RoomView_Control_source received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
+    Crestron_RoomView_Control_source.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_auto received command ON"
+when
+    Item Crestron_RoomView_Control_auto received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
+    Crestron_RoomView_Control_auto.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_blank received command ON"
+when
+    Item Crestron_RoomView_Control_blank received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
+    Crestron_RoomView_Control_blank.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_enter received command ON"
+when
+    Item Crestron_RoomView_Control_enter received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
+    Crestron_RoomView_Control_enter.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_freeze received command ON"
+when
+    Item Crestron_RoomView_Control_freeze received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
+    Crestron_RoomView_Control_freeze.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_openMenu received command ON"
+when
+    Item Crestron_RoomView_Control_openMenu received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
+    Crestron_RoomView_Control_openMenu.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuLeft received command ON"
+when
+    Item Crestron_RoomView_Control_menuLeft received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
+    Crestron_RoomView_Control_menuLeft.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuRight received command ON"
+when
+    Item Crestron_RoomView_Control_menuRight received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
+    Crestron_RoomView_Control_menuRight.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuUp received command ON"
+when
+    Item Crestron_RoomView_Control_menuUp received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
+    Crestron_RoomView_Control_menuUp.postUpdate(OFF)
+end
+
+rule "Crestron_RoomView_Control_menuDown received command ON"
+when
+    Item Crestron_RoomView_Control_menuDown received command ON
+then
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
+    Crestron_RoomView_Control_menuDown.postUpdate(OFF)
+end
+```
+
+#### Jython Rules without SSH
+
+```
+
+```
+
+#### Jython Rules with SSH
+
+```
+
+```
+
 ---
 
 ## 📝 License
