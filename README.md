@@ -171,13 +171,13 @@ In the `exec.whitelist` file, you enter commands that may be executed from your 
 If the Docker container is running on the same system, you can enter the following command, for example:
 
 ```
-/usr/bin/docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s
+/usr/bin/docker exec -i crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s
 ```
 
 If the Docker container is running on a different system, you can enter the following command, for example:
 
 ```
-/usr/bin/sshpass -p <password> /usr/bin/ssh -t -o StrictHostKeyChecking=no <username>@<ip> '/usr/bin/docker exec -it crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s'
+/usr/bin/sshpass -p <password> /usr/bin/ssh -o StrictHostKeyChecking=no <username>@<ip> '/usr/bin/docker exec -i crestron-roomview /usr/bin/python3 /app/crestron_roomview.py %2$s'
 ```
 
 Please replace `<username>`, `<password>` and `<ip>` with the username, password and ip from your Docker system (system where you have Docker installed and running). For SSH, I also recommend installing and using `sshpass`. However, first make sure that the openHAB user has a 'fingerprint' for SSH (`ssh -u openhab sshpass -p <password> <username>@<ip>`).
@@ -279,7 +279,7 @@ rule "Crestron_RoomView_Control_TogglePower received command ON"
 when
     Item Crestron_RoomView_Control_TogglePower received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
     Crestron_RoomView_Control_TogglePower.postUpdate(OFF)
 end
 
@@ -287,7 +287,7 @@ rule "Crestron_RoomView_Control_VolumeDown received command ON"
 when
     Item Crestron_RoomView_Control_VolumeDown received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
     Crestron_RoomView_Control_VolumeDown.postUpdate(OFF)
 end
 
@@ -295,7 +295,7 @@ rule "Crestron_RoomView_Control_VolumeUp received command ON"
 when
     Item Crestron_RoomView_Control_VolumeUp received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
     Crestron_RoomView_Control_VolumeUp.postUpdate(OFF)
 end
 
@@ -303,7 +303,7 @@ rule "Crestron_RoomView_Control_Mute_Volume received command ON"
 when
     Item Crestron_RoomView_Control_Mute_Volume received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
     Crestron_RoomView_Control_Mute_Volume.postUpdate(OFF)
 end
 
@@ -311,7 +311,7 @@ rule "Crestron_RoomView_Control_SrcToComputer1 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToComputer1 received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
     Crestron_RoomView_Control_SrcToComputer1.postUpdate(OFF)
 end
 
@@ -319,7 +319,7 @@ rule "Crestron_RoomView_Control_SrcToComputer2 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToComputer2 received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
     Crestron_RoomView_Control_SrcToComputer2.postUpdate(OFF)
 end
 
@@ -327,7 +327,7 @@ rule "Crestron_RoomView_Control_SrcToHDMI1 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToHDMI1 received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
     Crestron_RoomView_Control_SrcToHDMI1.postUpdate(OFF)
 end
 
@@ -335,7 +335,7 @@ rule "Crestron_RoomView_Control_SrcToHDMI2 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToHDMI2 received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
     Crestron_RoomView_Control_SrcToHDMI2.postUpdate(OFF)
 end
 
@@ -343,7 +343,7 @@ rule "Crestron_RoomView_Control_SrcToVideo received command ON"
 when
     Item Crestron_RoomView_Control_SrcToVideo received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
     Crestron_RoomView_Control_SrcToVideo.postUpdate(OFF)
 end
 
@@ -351,7 +351,7 @@ rule "Crestron_RoomView_Control_source received command ON"
 when
     Item Crestron_RoomView_Control_source received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
     Crestron_RoomView_Control_source.postUpdate(OFF)
 end
 
@@ -359,7 +359,7 @@ rule "Crestron_RoomView_Control_auto received command ON"
 when
     Item Crestron_RoomView_Control_auto received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
     Crestron_RoomView_Control_auto.postUpdate(OFF)
 end
 
@@ -367,7 +367,7 @@ rule "Crestron_RoomView_Control_blank received command ON"
 when
     Item Crestron_RoomView_Control_blank received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
     Crestron_RoomView_Control_blank.postUpdate(OFF)
 end
 
@@ -375,7 +375,7 @@ rule "Crestron_RoomView_Control_enter received command ON"
 when
     Item Crestron_RoomView_Control_enter received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
     Crestron_RoomView_Control_enter.postUpdate(OFF)
 end
 
@@ -383,7 +383,7 @@ rule "Crestron_RoomView_Control_freeze received command ON"
 when
     Item Crestron_RoomView_Control_freeze received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
     Crestron_RoomView_Control_freeze.postUpdate(OFF)
 end
 
@@ -391,7 +391,7 @@ rule "Crestron_RoomView_Control_openMenu received command ON"
 when
     Item Crestron_RoomView_Control_openMenu received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
     Crestron_RoomView_Control_openMenu.postUpdate(OFF)
 end
 
@@ -399,7 +399,7 @@ rule "Crestron_RoomView_Control_menuLeft received command ON"
 when
     Item Crestron_RoomView_Control_menuLeft received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
     Crestron_RoomView_Control_menuLeft.postUpdate(OFF)
 end
 
@@ -407,7 +407,7 @@ rule "Crestron_RoomView_Control_menuRight received command ON"
 when
     Item Crestron_RoomView_Control_menuRight received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
     Crestron_RoomView_Control_menuRight.postUpdate(OFF)
 end
 
@@ -415,7 +415,7 @@ rule "Crestron_RoomView_Control_menuUp received command ON"
 when
     Item Crestron_RoomView_Control_menuUp received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
     Crestron_RoomView_Control_menuUp.postUpdate(OFF)
 end
 
@@ -423,7 +423,7 @@ rule "Crestron_RoomView_Control_menuDown received command ON"
 when
     Item Crestron_RoomView_Control_menuDown received command ON
 then
-    executeCommandLine("/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
+    executeCommandLine("/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
     Crestron_RoomView_Control_menuDown.postUpdate(OFF)
 end
 ```
@@ -437,7 +437,7 @@ rule "Crestron_RoomView_Control_TogglePower received command ON"
 when
     Item Crestron_RoomView_Control_TogglePower received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "togglePower")
     Crestron_RoomView_Control_TogglePower.postUpdate(OFF)
 end
 
@@ -445,7 +445,7 @@ rule "Crestron_RoomView_Control_VolumeDown received command ON"
 when
     Item Crestron_RoomView_Control_VolumeDown received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "reduceVolume")
     Crestron_RoomView_Control_VolumeDown.postUpdate(OFF)
 end
 
@@ -453,7 +453,7 @@ rule "Crestron_RoomView_Control_VolumeUp received command ON"
 when
     Item Crestron_RoomView_Control_VolumeUp received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "increaseVolume")
     Crestron_RoomView_Control_VolumeUp.postUpdate(OFF)
 end
 
@@ -461,7 +461,7 @@ rule "Crestron_RoomView_Control_Mute_Volume received command ON"
 when
     Item Crestron_RoomView_Control_Mute_Volume received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "muteVolume")
     Crestron_RoomView_Control_Mute_Volume.postUpdate(OFF)
 end
 
@@ -469,7 +469,7 @@ rule "Crestron_RoomView_Control_SrcToComputer1 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToComputer1 received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer1")
     Crestron_RoomView_Control_SrcToComputer1.postUpdate(OFF)
 end
 
@@ -477,7 +477,7 @@ rule "Crestron_RoomView_Control_SrcToComputer2 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToComputer2 received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToComputer2")
     Crestron_RoomView_Control_SrcToComputer2.postUpdate(OFF)
 end
 
@@ -485,7 +485,7 @@ rule "Crestron_RoomView_Control_SrcToHDMI1 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToHDMI1 received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI1")
     Crestron_RoomView_Control_SrcToHDMI1.postUpdate(OFF)
 end
 
@@ -493,7 +493,7 @@ rule "Crestron_RoomView_Control_SrcToHDMI2 received command ON"
 when
     Item Crestron_RoomView_Control_SrcToHDMI2 received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToHDMI2")
     Crestron_RoomView_Control_SrcToHDMI2.postUpdate(OFF)
 end
 
@@ -501,7 +501,7 @@ rule "Crestron_RoomView_Control_SrcToVideo received command ON"
 when
     Item Crestron_RoomView_Control_SrcToVideo received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "changeSourceToVideo")
     Crestron_RoomView_Control_SrcToVideo.postUpdate(OFF)
 end
 
@@ -509,7 +509,7 @@ rule "Crestron_RoomView_Control_source received command ON"
 when
     Item Crestron_RoomView_Control_source received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "source")
     Crestron_RoomView_Control_source.postUpdate(OFF)
 end
 
@@ -517,7 +517,7 @@ rule "Crestron_RoomView_Control_auto received command ON"
 when
     Item Crestron_RoomView_Control_auto received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "auto")
     Crestron_RoomView_Control_auto.postUpdate(OFF)
 end
 
@@ -525,7 +525,7 @@ rule "Crestron_RoomView_Control_blank received command ON"
 when
     Item Crestron_RoomView_Control_blank received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "blank")
     Crestron_RoomView_Control_blank.postUpdate(OFF)
 end
 
@@ -533,7 +533,7 @@ rule "Crestron_RoomView_Control_enter received command ON"
 when
     Item Crestron_RoomView_Control_enter received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "enter")
     Crestron_RoomView_Control_enter.postUpdate(OFF)
 end
 
@@ -541,7 +541,7 @@ rule "Crestron_RoomView_Control_freeze received command ON"
 when
     Item Crestron_RoomView_Control_freeze received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "freeze")
     Crestron_RoomView_Control_freeze.postUpdate(OFF)
 end
 
@@ -549,7 +549,7 @@ rule "Crestron_RoomView_Control_openMenu received command ON"
 when
     Item Crestron_RoomView_Control_openMenu received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "openMenu")
     Crestron_RoomView_Control_openMenu.postUpdate(OFF)
 end
 
@@ -557,7 +557,7 @@ rule "Crestron_RoomView_Control_menuLeft received command ON"
 when
     Item Crestron_RoomView_Control_menuLeft received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuLeft")
     Crestron_RoomView_Control_menuLeft.postUpdate(OFF)
 end
 
@@ -565,7 +565,7 @@ rule "Crestron_RoomView_Control_menuRight received command ON"
 when
     Item Crestron_RoomView_Control_menuRight received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuRight")
     Crestron_RoomView_Control_menuRight.postUpdate(OFF)
 end
 
@@ -573,7 +573,7 @@ rule "Crestron_RoomView_Control_menuUp received command ON"
 when
     Item Crestron_RoomView_Control_menuUp received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuUp")
     Crestron_RoomView_Control_menuUp.postUpdate(OFF)
 end
 
@@ -581,7 +581,7 @@ rule "Crestron_RoomView_Control_menuDown received command ON"
 when
     Item Crestron_RoomView_Control_menuDown received command ON
 then
-    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-it", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
+    "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh", "-o", "StrictHostKeyChecking=no", "<user>@<ip>", "/usr/bin/docker", "exec", "-i", "crestron-roomview", "/usr/bin/python3", "/app/crestron_roomview.py", "menuDown")
     Crestron_RoomView_Control_menuDown.postUpdate(OFF)
 end
 ```
@@ -601,7 +601,7 @@ from java.time import Duration
 
 def execute_and_reset(item_name, command):
     result = Exec.executeCommandLine(
-        "/usr/bin/docker", "exec", "-it", "crestron-roomview",
+        "/usr/bin/docker", "exec", "-i", "crestron-roomview",
         "/usr/bin/python3", "/app/crestron_roomview.py", command,
         Duration.ofSeconds(60)
     )
@@ -678,8 +678,8 @@ from java.time import Duration
 def execute_and_reset(item_name, command):
     result = Exec.executeCommandLine(
         "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh",
-        "-t", "-o", "StrictHostKeyChecking=no", "<user>@<ip>",
-        "/usr/bin/docker", "exec", "-it", "crestron-roomview",
+        "-o", "StrictHostKeyChecking=no", "<user>@<ip>",
+        "/usr/bin/docker", "exec", "-i", "crestron-roomview",
         "/usr/bin/python3", "/app/crestron_roomview.py", command,
         Duration.ofSeconds(60)
     )
