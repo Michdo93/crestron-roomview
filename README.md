@@ -226,7 +226,7 @@ A sitemap can be created so that items can also be operated. A sitemap is usuall
 ```
 sitemap crestron label="Crestron RoomView"
 {
-    Text label="Crestron RoomView Control" icon="screen" {
+    Frame label="Crestron RoomView Control" icon="screen" {
         
         // Power & Audio
         Switch item=Crestron_RoomView_Control_TogglePower label="On/off projector" mappings=[ON="Power"]
