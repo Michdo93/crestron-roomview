@@ -601,9 +601,9 @@ from java.time import Duration
 
 def execute_and_reset(item_name, command):
     result = Exec.executeCommandLine(
-        "/usr/bin/docker", "exec", "-i", "crestron-roomview",
-        "/usr/bin/python3", "/app/crestron_roomview.py", command,
-        Duration.ofSeconds(60)
+        Duration.ofSeconds(60),
+        ["/usr/bin/docker", "exec", "-i", "crestron-roomview",
+        "/usr/bin/python3", "/app/crestron_roomview.py", command]
     )
     LogAction.logInfo("CrestronExec", "Command result: {}".format(result))
     events.postUpdate(item_name, "OFF")
@@ -677,11 +677,11 @@ from java.time import Duration
 
 def execute_and_reset(item_name, command):
     result = Exec.executeCommandLine(
-        "/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh",
+        Duration.ofSeconds(60),
+        ["/usr/bin/sshpass", "-p", "<password>", "/usr/bin/ssh",
         "-o", "StrictHostKeyChecking=no", "<user>@<ip>",
         "/usr/bin/docker", "exec", "-i", "crestron-roomview",
-        "/usr/bin/python3", "/app/crestron_roomview.py", command,
-        Duration.ofSeconds(60)
+        "/usr/bin/python3", "/app/crestron_roomview.py", command]
     )
     LogAction.logInfo("CrestronExec", "Command result: {}".format(result))
     events.postUpdate(item_name, "OFF")
